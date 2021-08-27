@@ -19,6 +19,6 @@ App.use('/', Prediction);
 
 io.on('connection', socket);
 
-Server.listen(9998, () => {
+Server.listen(3000, () => {
     console.log("Withme Server online");
 })

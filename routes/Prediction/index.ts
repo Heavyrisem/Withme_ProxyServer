@@ -50,6 +50,6 @@ const Predict = async (req: Request<any,any,NUGU_Request>, res: Response) => {
 
 router.post('/caption', middleware.Parser, Predict);
 router.post('/ocr', middleware.Parser, Predict);
-
+router.post('/test', (req, res) => {res.send("Hello World")})
 
 export default router;
