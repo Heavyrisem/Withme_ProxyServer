@@ -2,7 +2,7 @@ import global from "../global";
 import { DefaultError } from "../model/Types";
 
 export interface Socket_Data_T {
-    imageBuffer: string
+    imageData: string
 }
 
 export class NUGU_Response<T = any> {

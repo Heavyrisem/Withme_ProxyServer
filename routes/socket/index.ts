@@ -1,0 +1,18 @@
+import socketio from 'socket.io';
+import global from '../../global';
+
+export default async (Client: socketio.Socket) => {
+    console.log("New Connect");
+    if (!Client.handshake.query.mobileID) return Client.disconnect();
+    const mobileID = Client.handshake.query.mobileID as string;
+    global.SOCKET_CLIENTS[mobileID] = Client;
+
+    function ErrorHandler(err: any) {
+        Client.emit("error", err);
+        Client.disconnect();
+    }
+
+    Client.on('disconnect', () => {
+        delete global.SOCKET_CLIENTS[mobileID];
+    })
+}

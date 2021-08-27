@@ -5,6 +5,7 @@ import socketio from 'socket.io'
 import middleware from './middleware';
 
 import Prediction from './routes/Prediction';
+import socket from './routes/socket';
 
 import './model/DB';
 
@@ -16,7 +17,7 @@ App.use(middleware.Parser);
 
 App.use('/', Prediction);
 
-// io.use
+io.on('connection', socket);
 
 Server.listen(9998, () => {
     console.log("Withme Server online");

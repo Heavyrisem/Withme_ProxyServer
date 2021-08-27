@@ -1,25 +1,44 @@
 import axios, { AxiosResponse } from 'axios';
-import DB from '../DB';
+import FormData from 'form-data';
 import { AI_ENDPOINT } from './Config.json'; 
 
 export default {
     Caption: async (image: Buffer): Promise<string> => {
         return new Promise(async (resolve, reject) => {
             try {
-                const db = await DB.GetConnection();
-
                 const fd = new FormData();
-                fd.append("file", new Blob([new Uint8Array(image, image.byteOffset, image.length)]), "image");
+                fd.append("file", image, "image.jpeg");
 
-                const reuslt: AxiosResponse<{reuslt: string}> = await axios({
+                const result: AxiosResponse<{result: string}> = await axios({
                     method: 'POST',
-                    url: AI_ENDPOINT,
-                    headers: {'Content-Type': 'multipart/form-data'},
+                    url: `http://${AI_ENDPOINT}/caption`,
+                    headers: fd.getHeaders(),
                     data: fd
                 });
-                
-                return resolve(reuslt.data.reuslt);
+                // console.log(result.data);
+                return resolve(result.data.result);
             } catch (err) {
+                // console.log(err)
+                return reject(err);
+            }
+        })
+    },
+    OCR: async (image: Buffer): Promise<string> => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const fd = new FormData();
+                fd.append("file", image, "image.jpeg");
+
+                const result: AxiosResponse<{result: string}> = await axios({
+                    method: 'POST',
+                    url: `http://${AI_ENDPOINT}/ocr`,
+                    headers: fd.getHeaders(),
+                    data: fd
+                });
+                // console.log(result.data);
+                return resolve(result.data.result);
+            } catch (err) {
+                // console.log(err)
                 return reject(err);
             }
         })
