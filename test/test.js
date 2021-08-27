@@ -2,7 +2,7 @@ const axios = require('axios');
 
 axios.default({
     method: "POST",
-    url: "http://localhost:9998/ocr",
+    url: "https://withme.heavyrisem.xyz/caption",
     data: {
         profile: {privatePlay:{deviceUniqueId: "TestID"}}
     }
