@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 import fs from 'fs';
 
-const socket = io('https://withme.heavyrisem.xyz', {query: {mobileID: "TestID"}});
+const socket = io('https://withme.heavyrisem.xyz', {query: {mobileID: "nuguTestID"}});
 console.log("Load")
 
 socket.on('connect', () => {
@@ -9,7 +9,7 @@ socket.on('connect', () => {
 })
 
 socket.on("ImageCapture", () => {
-    const img = fs.readFileSync('/Users/heavyrisem/Desktop/Study/WithMe_Server/ai/node/test/img.jpeg', 'base64');
+    const img = fs.readFileSync('/Users/heavyrisem/Desktop/Study/WithMe_Server/ai/node/test/img3.jpeg', 'base64');
     console.log("base64 length" ,img.length);
     socket.emit("ImageCapture", {imageData: img});
 });

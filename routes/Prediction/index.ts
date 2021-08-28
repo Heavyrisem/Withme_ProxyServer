@@ -42,7 +42,7 @@ const Predict = async (req: Request<any,any,NUGU_Request>, res: Response) => {
                 return res.send(nuguResponse.toString());
             }
         } catch (err) {
-            nuguResponse.output.result = "위드미 서버에서 요청을 처리하지 못했습니다.";
+            nuguResponse.output.result = "미인증된 캔들입니다. 인증을 먼저 진행해 주세요";
             return res.send(nuguResponse.toString());
         }
     } else return res.send(nuguResponse.toString());

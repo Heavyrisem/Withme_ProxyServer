@@ -10,7 +10,6 @@ export default {
         });
     },
     NUGU_Dev: (req: Request, res: Response, next: any) => {
-        console.log("DeV");
         if (req.body.version) {
             const nuguRequest = req.body as NUGU_Request;
             if (!nuguRequest.profile) req.body.profile = {
