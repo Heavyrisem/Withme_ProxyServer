@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import FormData from 'form-data';
+import Josa from 'josa-js';
 import { AI_ENDPOINT, TRANSLATE } from './Config.json'; 
 
 export default {
@@ -52,7 +53,7 @@ export default {
                     data: {
                         source: "en",
                         target: "ko",
-                        text: "I see " + text
+                        text: text
                     },
                     headers: {'X-Naver-Client-Id':TRANSLATE.client_id, 'X-Naver-Client-Secret': TRANSLATE.client_secret}
                 }
@@ -60,7 +61,11 @@ export default {
                 const translateResult: AxiosResponse<{code?: string, errorCode?: string, message: {result: {translatedText: string}}}> = await axios(info);
                 // console.log(translateResult.data);
                 if (translateResult.data.code || translateResult.data.errorCode) return reject(translateResult.data.code);
-                else return resolve(translateResult.data.message.result.translatedText);
+                else {
+                    let result = translateResult.data.message.result.translatedText.replace(".", "");
+                    result += Josa.c(result.split(" ").reverse()[0], "이/가") + " 보이네요.";
+                    return resolve(result);
+                }
             } catch (err) {
                 console.log("translateerr", err);
                 return reject(err);
