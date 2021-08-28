@@ -57,10 +57,10 @@ export default {
                     headers: {'X-Naver-Client-Id':TRANSLATE.client_id, 'X-Naver-Client-Secret': TRANSLATE.client_secret}
                 }
 
-                const translateResult: AxiosResponse<{code?: string, errorCode?: string, message: {result: string}}> = await axios(info);
+                const translateResult: AxiosResponse<{code?: string, errorCode?: string, message: {result: {translatedText: string}}}> = await axios(info);
                 // console.log(translateResult.data);
                 if (translateResult.data.code || translateResult.data.errorCode) return reject(translateResult.data.code);
-                else return resolve(translateResult.data.message.result);
+                else return resolve(translateResult.data.message.result.translatedText);
                 // request.post(info, (err, request, body) => {
                 //     if (err) return resolve({err: err});
 
