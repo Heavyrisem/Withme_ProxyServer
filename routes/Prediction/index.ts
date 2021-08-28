@@ -9,7 +9,7 @@ import { NUGU_Request, NUGU_Response, Socket_Data_T } from "../Types";
 const router = Router();
 
 const Predict = async (req: Request<any,any,NUGU_Request>, res: Response) => {
-    let nuguResponse = new NUGU_Response<{result: string}>({result: "NUGU 캔들의 정보를 가져오기 못했습니다."});
+    let nuguResponse = new NUGU_Response<{result: string}>({result: "미인증된 캔들입니다. 인증을 먼저 진행해 주세요"});
 
     if (req.body.profile) {
         try {
