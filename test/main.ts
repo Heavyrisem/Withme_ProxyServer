@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 import fs from 'fs';
 
-const socket = io('http://localhost:3000', {query: {mobileID: "TestID"}});
+const socket = io('https://withme.heavyrisem.xyz', {query: {mobileID: "TestID"}});
 console.log("Load")
 
 socket.on('connect', () => {

@@ -28,7 +28,7 @@ const Predict = async (req: Request<any,any,NUGU_Request>, res: Response) => {
                             case "/ocr": result = await Prediction.OCR(Buffer.from(data.imageData, "base64")); break;
                             default: result = `${req.url} 은 잘못된 경로입니다.`;
                         }
-                        nuguResponse.output.result = result;
+                        nuguResponse.output.result = await Prediction.Translate_ENtoKO(result);
                     } catch (err) {
                         nuguResponse.output.result = `오류 ${err}}, 인공지능 서버에서 오류가 발생했습니다.`;
                     } finally {return res.send(nuguResponse.toString())}
