@@ -14,6 +14,7 @@ const Server = http.createServer(App);
 const io = new socketio.Server(Server, {transports: ['websocket', 'polling']});
 
 App.use(middleware.Parser);
+App.use(middleware.NUGU_Dev);
 
 App.use('/', Prediction);
 
