@@ -14,7 +14,7 @@ const Predict = async (req: Request<any,any,NUGU_Request>, res: Response) => {
     if (req.body.profile) {
         try {
             const mobileID = await DeviceDB.FindDevice(req.body.profile.privatePlay.deviceUniqueId);
-        
+            console.log(Object.keys(global.SOCKET_CLIENTS));
             if (global.SOCKET_CLIENTS[mobileID]) {
                 // Send event to mobile
                 // console.log("Emit event");
