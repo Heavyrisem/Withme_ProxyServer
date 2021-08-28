@@ -52,7 +52,7 @@ export default {
                     data: {
                         source: "en",
                         target: "ko",
-                        text: text
+                        text: "I see " + text
                     },
                     headers: {'X-Naver-Client-Id':TRANSLATE.client_id, 'X-Naver-Client-Secret': TRANSLATE.client_secret}
                 }
@@ -61,15 +61,6 @@ export default {
                 // console.log(translateResult.data);
                 if (translateResult.data.code || translateResult.data.errorCode) return reject(translateResult.data.code);
                 else return resolve(translateResult.data.message.result.translatedText);
-                // request.post(info, (err, request, body) => {
-                //     if (err) return resolve({err: err});
-
-                //     let data = JSON.parse(body);
-                    
-                    
-                //     if (data.code || data.errorCode) return resolve({err: body});
-                //     return resolve(data.message.result);
-                // });
             } catch (err) {
                 console.log("translateerr", err);
                 return reject(err);
