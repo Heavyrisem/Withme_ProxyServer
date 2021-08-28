@@ -9,7 +9,7 @@ socket.on('connect', () => {
 })
 
 socket.on("ImageCapture", () => {
-    const img = fs.readFileSync('C:/Users/heavy/Desktop/Develop/Withme_ProxyServer/test/img.jpeg', 'base64');
+    const img = fs.readFileSync('./img.jpeg', 'base64');
     console.log("base64 length" ,img.length);
     socket.emit("ImageCapture", {imageData: img});
 });

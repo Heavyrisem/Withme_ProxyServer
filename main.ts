@@ -11,7 +11,7 @@ import './model/DB';
 
 const App = express();
 const Server = http.createServer(App);
-const io = new socketio.Server(Server);
+const io = new socketio.Server(Server, {transports: ['websocket', 'polling']});
 
 App.use(middleware.Parser);
 
