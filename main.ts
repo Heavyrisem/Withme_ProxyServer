@@ -20,6 +20,6 @@ App.use('/', Prediction);
 
 io.on('connection', socket);
 
-Server.listen(3000, () => {
+Server.listen(80, () => {
     console.log("Withme Server online");
 })

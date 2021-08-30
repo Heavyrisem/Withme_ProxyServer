@@ -7,9 +7,9 @@ export default async (Client: socketio.Socket) => {
     const mobileID = Client.handshake.query.mobileID as string;
     global.SOCKET_CLIENTS[mobileID] = Client;
 
-    Client.on("ImageCapture", (d) => {
-        console.log(d);
-    })
+    // Client.on("ImageCapture", (d) => {
+    //     console.log(d);
+    // })
 
     function ErrorHandler(err: any) {
         Client.emit("error", err);
