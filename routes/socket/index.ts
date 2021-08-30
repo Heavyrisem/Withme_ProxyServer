@@ -16,7 +16,8 @@ export default async (Client: socketio.Socket) => {
         Client.disconnect();
     }
 
-    Client.on('disconnect', () => {
+    Client.on('disconnect', (reason) => {
+        console.log("Disconnected", reason);
         delete global.SOCKET_CLIENTS[mobileID];
     })
 }
