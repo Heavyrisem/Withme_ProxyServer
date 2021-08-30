@@ -19,9 +19,9 @@ const Predict = async (req: Request<any,any,NUGU_Request>, res: Response) => {
                 // Send event to mobile
                 // console.log("Emit event");
                 global.SOCKET_CLIENTS[mobileID].once("ImageCapture", async (data: Socket_Data_T) => {
+                    console.log("base64 length", data.imageData.length);
 
                     try {
-                        console.log("base64 length", data.imageData.length);
                         let result;
                         switch (req.url) {
                             case "/caption": result = await Prediction.Caption(Buffer.from(data.imageData, "base64")); break;
@@ -30,6 +30,7 @@ const Predict = async (req: Request<any,any,NUGU_Request>, res: Response) => {
                         }
                         nuguResponse.output.result = await Prediction.Translate_ENtoKO(result);
                     } catch (err) {
+                        console.log(err);
                         nuguResponse.output.result = `오류 ${err}}, 인공지능 서버에서 오류가 발생했습니다.`;
                     } finally {return res.send(nuguResponse.toString())}
                 });
