@@ -21,7 +21,7 @@ const Predict = async (req: Request<any,any,NUGU_Request>, res: Response) => {
                 global.SOCKET_CLIENTS[mobileID].once("ImageCapture", async (data: Socket_Data_T) => {
 
                     try {
-                        // console.log("base64 length", data.imageData.length);
+                        console.log("base64 length", data.imageData.length);
                         let result;
                         switch (req.url) {
                             case "/caption": result = await Prediction.Caption(Buffer.from(data.imageData, "base64")); break;
