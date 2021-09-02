@@ -11,7 +11,7 @@ import './model/DB';
 
 const App = express();
 const Server = http.createServer(App);
-const io = new socketio.Server(Server, {transports: ['websocket', 'polling']});
+const io = new socketio.Server(Server, {transports: ['websocket', 'polling'], maxHttpBufferSize: 100000000000});
 
 App.use(middleware.Parser);
 App.use(middleware.NUGU_Dev);
