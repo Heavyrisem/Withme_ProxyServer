@@ -23,8 +23,8 @@ const Predict = async (req: Request<any,any,{imageData: string}>, res: Response)
             console.log(err);
             textResult = `오류 ${err}}, 인공지능 서버에서 오류가 발생했습니다.`;
         }
-    } else return textResult = "이미지 데이터가 없습니다.";
-
+    } else textResult = "이미지 데이터가 없습니다.";
+    console.log(textResult);
     try {
         const base64result = await googleTTS.getAudioBase64(textResult, {
             lang: 'ko',
