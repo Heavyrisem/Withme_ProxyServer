@@ -26,13 +26,12 @@ const Predict = async (req: Request<any,any,{imageData: string}>, res: Response)
     } else textResult = "이미지 데이터가 없습니다.";
     console.log(textResult);
     try {
-        const base64result = await googleTTS.getAudioBase64(textResult, {
+        const audioUrl = googleTTS.getAudioUrl(textResult, {
             lang: 'ko',
             slow: false,
             host: 'https://translate.google.com',
-            timeout: 10000,
         });
-        res.send({result: base64result});
+        res.send({result: audioUrl});
     } catch (err) {
         console.log(err);
         res.send({err: err});
