@@ -66,7 +66,7 @@ export default {
                     let result = translateResult.data.message.result.translatedText.replace(".", "").split(" ");
                     let lastWord = result.pop() as string;
                     
-                    if (lastWord.startsWith("있")) result.push(lastWord + " 있어요");
+                    if (lastWord.startsWith("있")) result.push("있어요");
                     else result.push(lastWord + Josa.c(lastWord, "이/가") + " 보이네요.");
                     // result.push(lastWord);
                     console.log(lastWord, result);
