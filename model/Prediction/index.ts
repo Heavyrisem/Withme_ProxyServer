@@ -63,18 +63,14 @@ export default {
                 // console.log(translateResult.data);
                 if (translateResult.data.code || translateResult.data.errorCode) return reject(translateResult.data.code);
                 else {
-                    let tmp = translateResult.data.message.result.translatedText.replace(".", "").split(" ");
-                    let lastWord = tmp.reverse()[0];
-                    tmp.pop();
-                    tmp = tmp.reverse();
-                    tmp.push(lastWord);
-                    let result = tmp.join(" ");
-
-                    if (lastWord.endsWith("다")) lastWord = " " + lastWord.replace("다", "어요");
-                    else lastWord = Josa.c(lastWord, "이/가") + " 보이네요.";
-                    result += lastWord;
-
-                    return resolve(result);
+                    let result = translateResult.data.message.result.translatedText.replace(".", "").split(" ");
+                    let lastWord = result.pop();
+                    
+                    if (lastWord.startsWith("있")) result.push(lastWord + " 있어요");
+                    else result.push(lastWord + Josa.c(lastWord, "이/가") + " 보이네요.");
+                    result.push(lastWord);
+                    
+                    return resolve(result.join());
                 }
             } catch (err) {
                 console.log("translateerr", err);
