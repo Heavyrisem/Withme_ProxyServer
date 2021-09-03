@@ -67,8 +67,9 @@ export default {
                     result.pop();
 
                     if (lastWord.endsWith("다")) lastWord = lastWord.replace("다", "어요");
-                    else lastWord += Josa.c(lastWord, "이/가") + " 보이네요.";
-                    result.push(lastWord)
+                    else lastWord = Josa.c(lastWord, "이/가") + " 보이네요.";
+                    result = result.reverse();
+                    result.push(lastWord);
                     return resolve(result.join(" "));
                 }
             } catch (err) {
