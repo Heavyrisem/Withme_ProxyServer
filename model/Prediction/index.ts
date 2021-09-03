@@ -68,9 +68,9 @@ export default {
                     
                     if (lastWord.startsWith("있")) result.push(lastWord + " 있어요");
                     else result.push(lastWord + Josa.c(lastWord, "이/가") + " 보이네요.");
-                    result.push(lastWord);
+                    // result.push(lastWord);
                     console.log(lastWord, result);
-                    return resolve(result.join());
+                    return resolve(result.join(" "));
                 }
             } catch (err) {
                 console.log("translateerr", err);
