@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import FormData from 'form-data';
 import Josa from 'josa-js';
+import { tmpdir } from 'node:os';
 import { AI_ENDPOINT, TRANSLATE } from './Config.json'; 
 
 export default {
@@ -62,15 +63,18 @@ export default {
                 // console.log(translateResult.data);
                 if (translateResult.data.code || translateResult.data.errorCode) return reject(translateResult.data.code);
                 else {
-                    let result = translateResult.data.message.result.translatedText.replace(".", "").split(" ");
-                    let lastWord = result.reverse()[0];
-                    result.pop();
+                    let tmp = translateResult.data.message.result.translatedText.replace(".", "").split(" ");
+                    let lastWord = tmp.reverse()[0];
+                    tmp.pop();
+                    tmp = tmp.reverse();
+                    tmp.push(lastWord);
+                    let result = tmp.join(" ");
 
-                    if (lastWord.endsWith("다")) lastWord = lastWord.replace("다", "어요");
+                    if (lastWord.endsWith("다")) lastWord = " " + lastWord.replace("다", "어요");
                     else lastWord = Josa.c(lastWord, "이/가") + " 보이네요.";
-                    result = result.reverse();
-                    result.push(lastWord);
-                    return resolve(result.join(" "));
+                    result += lastWord;
+
+                    return resolve(result);
                 }
             } catch (err) {
                 console.log("translateerr", err);
