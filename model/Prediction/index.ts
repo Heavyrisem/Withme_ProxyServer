@@ -63,12 +63,12 @@ export default {
                 if (translateResult.data.code || translateResult.data.errorCode) return reject(translateResult.data.code);
                 else {
                     let result = translateResult.data.message.result.translatedText.replace(".", "").split(" ");
-                    let lastWord = result.reverse()[0];
-                    result.pop();
-
-                    if (lastWord.endsWith("다")) lastWord = lastWord.replace("다", "어요");
-                    else lastWord += Josa.c(lastWord, "이/가") + " 보이네요.";
-                    result.push(lastWord)
+                    let lastWord = result.pop() as string;
+                    
+                    if (lastWord.startsWith("있")) result.push("있어요");
+                    else result.push(lastWord + Josa.c(lastWord, "이/가") + " 보이네요.");
+                    // result.push(lastWord);
+                    console.log(lastWord, result);
                     return resolve(result.join(" "));
                 }
             } catch (err) {
