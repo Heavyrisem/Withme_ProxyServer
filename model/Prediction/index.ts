@@ -63,7 +63,8 @@ export default {
                 if (translateResult.data.code || translateResult.data.errorCode) return reject(translateResult.data.code);
                 else {
                     let result = translateResult.data.message.result.translatedText.replace(".", "");
-                    result += Josa.c(result.split(" ").reverse()[0], "이/가") + " 보이네요.";
+                    if (result.split(" ").reverse()[0].endsWith("다")) result = result.split(" ").reverse()[0].replace("다", "어요");
+                    else result += Josa.c(result.split(" ").reverse()[0], "이/가") + " 보이네요.";
                     return resolve(result);
                 }
             } catch (err) {

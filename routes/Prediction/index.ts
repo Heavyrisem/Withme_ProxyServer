@@ -15,6 +15,7 @@ const Predict = async (req: Request<any,any,NUGU_Request>, res: Response) => {
         try {
             const mobileID = await DeviceDB.FindDevice(req.body.profile.privatePlay.deviceUniqueId);
             console.log(Object.keys(global.SOCKET_CLIENTS));
+            
             if (global.SOCKET_CLIENTS[mobileID]) {
                 // Send event to mobile
                 // console.log("Emit event");
@@ -24,11 +25,14 @@ const Predict = async (req: Request<any,any,NUGU_Request>, res: Response) => {
                     try {
                         let result;
                         switch (req.url) {
-                            case "/caption": result = await Prediction.Caption(Buffer.from(data.imageData, "base64")); break;
+                            case "/caption": 
+                                result = await Prediction.Caption(Buffer.from(data.imageData, "base64"));
+                                result = await Prediction.Translate_ENtoKO(result);
+                                break;
                             case "/ocr": result = await Prediction.OCR(Buffer.from(data.imageData, "base64")); break;
                             default: result = `${req.url} 은 잘못된 경로입니다.`;
                         }
-                        nuguResponse.output.result = await Prediction.Translate_ENtoKO(result);
+                        nuguResponse.output.result = result;
                     } catch (err) {
                         console.log(err);
                         nuguResponse.output.result = `오류 ${err}}, 인공지능 서버에서 오류가 발생했습니다.`;
