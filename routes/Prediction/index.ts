@@ -13,13 +13,18 @@ const Predict = async (req: Request<any,any,NUGU_Request>, res: Response) => {
 
     if (req.body.profile) {
         try {
-            const mobileID = await DeviceDB.FindDevice(req.body.profile.privatePlay.deviceUniqueId);
+            const mobileIDlist = await DeviceDB.FindDevice(req.body.profile.privatePlay.deviceUniqueId);
+            let onlineDeviceID: string = "";
+            let onlineDeviceNum = 0;
             console.log(Object.keys(global.SOCKET_CLIENTS));
             
-            if (global.SOCKET_CLIENTS[mobileID]) {
+            for (const ID of mobileIDlist)
+                if (global.SOCKET_CLIENTS[ID]) {onlineDeviceNum++;onlineDeviceID=ID}
+
+            if (onlineDeviceID && onlineDeviceNum == 1) {
                 // Send event to mobile
                 // console.log("Emit event");
-                global.SOCKET_CLIENTS[mobileID].once("ImageCapture", async (data: Socket_Data_T) => {
+                global.SOCKET_CLIENTS[onlineDeviceID].once("ImageCapture", async (data: Socket_Data_T) => {
                     console.log("base64 length", data.imageData.length);
 
                     try {
@@ -39,7 +44,10 @@ const Predict = async (req: Request<any,any,NUGU_Request>, res: Response) => {
                     } finally {return res.send(nuguResponse.toString())}
                 });
 
-                global.SOCKET_CLIENTS[mobileID].emit("ImageCapture", true);
+                global.SOCKET_CLIENTS[onlineDeviceID].emit("ImageCapture", true);
+            } else if (onlineDeviceNum > 1) {
+                nuguResponse.output.result = "연결된 모바일 디바이스가 너무 많습니다. 한 개만 연결해 주세요.";
+                return res.send(nuguResponse.toString());
             } else {
                 // mobile device is offline
                 // console.log("Target Device is offline");
