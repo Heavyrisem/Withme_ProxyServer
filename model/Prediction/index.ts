@@ -1,6 +1,7 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import FormData from 'form-data';
 import Josa from 'josa-js';
+import { DefaultError } from '../Types';
 import { AI_ENDPOINT, TRANSLATE } from './Config.json'; 
 
 export default {
@@ -14,13 +15,17 @@ export default {
                     method: 'POST',
                     url: `http://${AI_ENDPOINT}/caption`,
                     headers: fd.getHeaders(),
-                    data: fd
+                    data: fd,
+                    timeout: 1500,
+                    timeoutErrorMessage: DefaultError.TIMEOUT.toString()
                 });
                 // console.log(result.data);
                 return resolve(result.data.result);
             } catch (err) {
                 // console.log(err)
-                return reject(err);
+                // if ((err as AxiosError).message == DefaultError.TIMEOUT.toString()) return reject(DefaultError.TIMEOUT.toString())
+                console.log((err as AxiosError).message);
+                return reject((err as AxiosError).message);
             }
         })
     },
@@ -34,13 +39,15 @@ export default {
                     method: 'POST',
                     url: `http://${AI_ENDPOINT}/ocr`,
                     headers: fd.getHeaders(),
-                    data: fd
+                    data: fd,
+                    timeout: 1500,
+                    timeoutErrorMessage: DefaultError.TIMEOUT.toString()
                 });
                 // console.log(result.data);
                 return resolve(result.data.result);
             } catch (err) {
                 // console.log(err)
-                return reject(err);
+                return reject((err as AxiosError).message);
             }
         })
     },

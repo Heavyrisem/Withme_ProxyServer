@@ -3,6 +3,7 @@ import global from "../../global";
 import middleware from "../../middleware";
 import DeviceDB from "../../model/DeviceDB";
 import Prediction from "../../model/Prediction";
+import { DefaultError } from "../../model/Types";
 import { NUGU_Request, NUGU_Response, Socket_Data_T } from "../Types";
 
 
@@ -22,9 +23,8 @@ const Predict = async (req: Request<any,any,NUGU_Request>, res: Response) => {
                 if (global.SOCKET_CLIENTS[ID]) {onlineDeviceNum++;onlineDeviceID=ID}
 
             if (onlineDeviceID && onlineDeviceNum == 1) {
-                // Send event to mobile
-                // console.log("Emit event");
-                global.SOCKET_CLIENTS[onlineDeviceID].once("ImageCapture", async (data: Socket_Data_T) => {
+                const ImageHandler = async (data: Socket_Data_T) => {
+                    clearTimeout(Timeout);
                     console.log("base64 length", data.imageData.length);
 
                     try {
@@ -32,17 +32,25 @@ const Predict = async (req: Request<any,any,NUGU_Request>, res: Response) => {
                         switch (req.url) {
                             case "/caption": 
                                 result = await Prediction.Caption(Buffer.from(data.imageData, "base64"));
-                                result = await Prediction.Translate_ENtoKO(result);
-                                break;
+                                result = await Prediction.Translate_ENtoKO(result); break;
                             case "/ocr": result = await Prediction.OCR(Buffer.from(data.imageData, "base64")); break;
                             default: result = `${req.url} 은 잘못된 경로입니다.`;
                         }
                         nuguResponse.output.result = result;
                     } catch (err) {
-                        console.log(err);
-                        nuguResponse.output.result = `오류 ${err}}, 인공지능 서버에서 오류가 발생했습니다.`;
+                        if (err == DefaultError.TIMEOUT) nuguResponse.output.result = '요청 시간이 초과되었습니다.';
+                        else nuguResponse.output.result = `오류 ${err}, 인공지능 서버에서 오류가 발생했습니다.`;
                     } finally {return res.send(nuguResponse.toString())}
-                });
+                }
+                // Send event to mobile
+                // console.log("Emit event");
+                const Timeout = setTimeout(() => {
+                    global.SOCKET_CLIENTS[onlineDeviceID].removeListener("ImageCapture", ImageHandler);
+                    nuguResponse.output.result = "요청을 처리하는데 너무 오래 걸립니다.";
+                    return res.send(nuguResponse.toString());
+                }, 3000);
+
+                global.SOCKET_CLIENTS[onlineDeviceID].once("ImageCapture", ImageHandler);
 
                 global.SOCKET_CLIENTS[onlineDeviceID].emit("ImageCapture", true);
             } else if (onlineDeviceNum > 1) {

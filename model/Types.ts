@@ -7,5 +7,6 @@ export interface Device_DB {
 
 export enum DefaultError {
     DB_FAIL = 1,
-    INVAILD_PARAMS
+    INVAILD_PARAMS,
+    TIMEOUT
 }
