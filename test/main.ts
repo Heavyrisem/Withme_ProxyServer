@@ -36,10 +36,10 @@ socket.on('connect', () => {
     console.log("Conn");
 })
 
-// socket.on("ImageCapture", () => {
-//     const img = fs.readFileSync('/Users/heavyrisem/Desktop/Study/WithMe_Server/ai/node/test/test.jpeg', 'base64');
-//     console.log("base64 length", img.length);
-//     socket.emit("ImageCapture", {imageData: img});
-// });
+socket.on("ImageCapture", () => {
+    const img = fs.readFileSync('/Users/heavyrisem/Desktop/Study/WithMe_Server/ai/node/test/test.jpeg', 'base64');
+    console.log("base64 length", img.length);
+    socket.emit("ImageCapture", {imageData: img});
+});
 
 socket.connect();
