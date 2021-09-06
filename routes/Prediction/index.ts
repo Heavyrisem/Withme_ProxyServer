@@ -17,6 +17,7 @@ const Predict = async (req: Request<any,any,NUGU_Request>, res: Response) => {
             const mobileIDlist = await DeviceDB.FindDevice(req.body.profile.privatePlay.deviceUniqueId);
             let onlineDeviceID: string = "";
             let onlineDeviceNum = 0;
+            let Timer = Date.now();
             console.log(Object.keys(global.SOCKET_CLIENTS));
             
             for (const ID of mobileIDlist)
@@ -25,15 +26,16 @@ const Predict = async (req: Request<any,any,NUGU_Request>, res: Response) => {
             if (onlineDeviceID && onlineDeviceNum == 1) {
                 const ImageHandler = async (data: Socket_Data_T) => {
                     clearTimeout(Timeout);
-                    console.log("base64 length", data.imageData.length);
-
+                    console.log(Date.now() - Timer, 'ms');
                     try {
+                        let imageBuffer = Buffer.from(data.imageData, "base64");
                         let result;
+                        console.log("ImageBuffer", imageBuffer.byteLength / 1000, 'KB');
                         switch (req.url) {
                             case "/caption": 
-                                result = await Prediction.Caption(Buffer.from(data.imageData, "base64"));
+                                result = await Prediction.Caption(imageBuffer);
                                 result = await Prediction.Translate_ENtoKO(result); break;
-                            case "/ocr": result = await Prediction.OCR(Buffer.from(data.imageData, "base64")); break;
+                            case "/ocr": result = await Prediction.OCR(imageBuffer); break;
                             default: result = `${req.url} 은 잘못된 경로입니다.`;
                         }
                         nuguResponse.output.result = result;
@@ -53,6 +55,7 @@ const Predict = async (req: Request<any,any,NUGU_Request>, res: Response) => {
                 global.SOCKET_CLIENTS[onlineDeviceID].once("ImageCapture", ImageHandler);
 
                 global.SOCKET_CLIENTS[onlineDeviceID].emit("ImageCapture", true);
+                Timer = Date.now();
             } else if (onlineDeviceNum > 1) {
                 nuguResponse.output.result = "연결된 모바일 디바이스가 너무 많습니다. 한 개만 연결해 주세요.";
                 return res.send(nuguResponse.toString());
