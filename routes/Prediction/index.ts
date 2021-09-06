@@ -38,7 +38,7 @@ const Predict = async (req: Request<any,any,NUGU_Request>, res: Response) => {
                         }
                         nuguResponse.output.result = result;
                     } catch (err) {
-                        if (err == DefaultError.TIMEOUT) nuguResponse.output.result = '요청 시간이 초과되었습니다.';
+                        if (err == DefaultError.TIMEOUT) nuguResponse.output.result = '인공지능 서버 요청 시간이 초과되었습니다.';
                         else nuguResponse.output.result = `오류 ${err}, 인공지능 서버에서 오류가 발생했습니다.`;
                     } finally {return res.send(nuguResponse.toString())}
                 }
