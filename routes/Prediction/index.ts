@@ -29,7 +29,7 @@ const Predict = async (req: Request<any,any,{imageData: string}>, res: Response)
     } else textResult = "이미지 데이터가 없습니다.";
     console.log(textResult);
     try {
-        const audioUrl = googleTTS.getAudioUrl(textResult, {
+        const audioUrl = googleTTS.getAllAudioUrls(textResult, {
             lang: 'ko',
             slow: false,
             host: 'https://translate.google.com',
