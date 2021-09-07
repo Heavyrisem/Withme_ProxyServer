@@ -8,6 +8,7 @@ const router = Router();
 
 const Predict = async (req: Request<any,any,{imageData: string}>, res: Response) => {
     let textResult = "";
+    let timer = Date.now();
     if (req.body.imageData) {
         console.log("base64 length", req.body.imageData.length);
 
@@ -29,11 +30,14 @@ const Predict = async (req: Request<any,any,{imageData: string}>, res: Response)
     } else textResult = "이미지 데이터가 없습니다.";
     console.log(textResult);
     try {
+        let TTStimer = Date.now();
         const audioUrl = googleTTS.getAllAudioUrls(textResult, {
             lang: 'ko',
             slow: false,
             host: 'https://translate.google.com',
         });
+        console.log("TTS gen time", Date.now() - timer, 'ms');
+        console.log("Request time", Date.now() - timer, 'ms');
         res.send({result: audioUrl});
     } catch (err) {
         console.log(err);
