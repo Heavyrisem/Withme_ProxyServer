@@ -22,7 +22,7 @@ const Predict = async (req: Request<any,any,NUGU_Request>, res: Response) => {
             
             for (const ID of mobileIDlist)
                 if (global.SOCKET_CLIENTS[ID]) {onlineDeviceNum++;onlineDeviceID=ID}
-
+            console.log(onlineDeviceNum, onlineDeviceID);
             if (onlineDeviceID && onlineDeviceNum == 1) {
                 const ImageHandler = async (data: Socket_Data_T) => {
                     clearTimeout(Timeout);
