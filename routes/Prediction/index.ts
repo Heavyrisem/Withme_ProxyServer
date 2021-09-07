@@ -12,13 +12,16 @@ const Predict = async (req: Request<any,any,{imageData: string}>, res: Response)
         console.log("base64 length", req.body.imageData.length);
 
         try {
-            let result;
+            let imageBuffer = Buffer.from(req.body.imageData, "base64");
+            console.log("ImageBuffer", imageBuffer.byteLength / 1000, 'KB');
             switch (req.url) {
-                case "/caption": result = await Prediction.Caption(Buffer.from(req.body.imageData, "base64")); break;
-                case "/ocr": result = await Prediction.OCR(Buffer.from(req.body.imageData, "base64")); break;
+                case "/caption": 
+                    textResult = await Prediction.Caption(imageBuffer);
+                    textResult = await Prediction.Translate_ENtoKO(textResult); break;
+                case "/ocr": textResult = await Prediction.OCR(imageBuffer); break;
                 default: textResult = `${req.url} 은 잘못된 경로입니다.`;
             }
-            (result)&& (textResult = await Prediction.Translate_ENtoKO(result))
+            
         } catch (err) {
             console.log(err);
             textResult = `오류 ${err}}, 인공지능 서버에서 오류가 발생했습니다.`;
