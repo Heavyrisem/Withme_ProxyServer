@@ -10,7 +10,7 @@ export default {
             try {
                 const fd = new FormData();
                 fd.append("file", image, "image.jpeg");
-
+                let timer = Date.now();
                 const result: AxiosResponse<{result: string}> = await axios({
                     method: 'POST',
                     url: `http://${AI_ENDPOINT}/caption`,
@@ -18,6 +18,7 @@ export default {
                     data: fd
                 });
                 // console.log(result.data);
+                console.log("Caption Server", Date.now() - timer, 'ms');
                 return resolve(result.data.result);
             } catch (err) {
                 // console.log(err)
@@ -47,6 +48,7 @@ export default {
     },
     Translate_ENtoKO: async (text: string): Promise<string> => {
         return new Promise(async (resolve, reject) => {
+            let timer = Date.now();
             try {
                 let info: AxiosRequestConfig = {
                     method: "POST",
@@ -69,7 +71,8 @@ export default {
                     if (lastWord.startsWith("있")) result.push("있어요");
                     else result.push(lastWord + Josa.c(lastWord, "이/가") + " 보이네요.");
                     // result.push(lastWord);
-                    console.log(lastWord, result);
+                    // console.log(lastWord, result);
+                    console.log("Translate API", Date.now() - timer, 'ms');
                     return resolve(result.join(" "));
                 }
             } catch (err) {
