@@ -54,7 +54,7 @@ const Predict = async (req: Request<any,any,NUGU_Request>, res: Response) => {
 
                 global.SOCKET_CLIENTS[onlineDeviceID].once("ImageCapture", ImageHandler);
 
-                global.SOCKET_CLIENTS[onlineDeviceID].emit("ImageCapture", true);
+                global.SOCKET_CLIENTS[onlineDeviceID].emit("ImageCapture", {type: req.url.replace("/", "")});
                 Timer = Date.now();
             } else if (onlineDeviceNum > 1) {
                 nuguResponse.output.result = "연결된 모바일 디바이스가 너무 많습니다. 한 개만 연결해 주세요.";
