@@ -72,7 +72,7 @@ export default {
                     let result = translateResult.data.message.result.translatedText.replace(".", "").split(" ");
                     let lastWord = result.pop() as string;
                     
-                    if (lastWord.indexOf("있") != -1) result.push(lastWord.substring(0, lastWord.indexOf("있"))+"어요.");
+                    if (lastWord.indexOf("있") != -1) result.push(lastWord.substring(0, lastWord.indexOf("있"))+"있어요.");
                     else result.push(lastWord + Josa.c(lastWord, "이/가") + " 보이네요.");
                     // result.push(lastWord);
                     console.log(lastWord, result);
