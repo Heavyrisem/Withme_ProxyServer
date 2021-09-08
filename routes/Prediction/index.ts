@@ -18,10 +18,10 @@ const Predict = async (req: Request<any,any,NUGU_Request>, res: Response) => {
             let onlineDeviceID: string = "";
             let onlineDeviceNum = 0;
             let Timer = Date.now();
-            console.log(Object.keys(global.SOCKET_CLIENTS));
+            console.log(Object.keys(global.SOCKET_CLIENTS), mobileIDlist);
             
             for (const ID of mobileIDlist)
-                if (global.SOCKET_CLIENTS[ID]) {onlineDeviceNum++;onlineDeviceID=ID}
+                if (global.SOCKET_CLIENTS[ID]) {onlineDeviceNum+=1;onlineDeviceID=ID}
             console.log(onlineDeviceNum, onlineDeviceID);
             if (onlineDeviceID && onlineDeviceNum == 1) {
                 const ImageHandler = async (data: Socket_Data_T) => {
