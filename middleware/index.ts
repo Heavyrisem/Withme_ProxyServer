@@ -11,7 +11,7 @@ export default {
     },
     NUGU_Dev: (req: Request, res: Response, next: any) => {
         if (req.body.version) {
-            console.log(req.body.profile);
+            console.log(req.body);
             const nuguRequest = req.body as NUGU_Request;
             if (!nuguRequest.profile) req.body.profile = {
                 privatePlay: {
