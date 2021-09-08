@@ -25,11 +25,11 @@ const Predict = async (req: Request<any,any,NUGU_Request>, res: Response) => {
             console.log(onlineDeviceNum, onlineDeviceID);
             if (onlineDeviceID && onlineDeviceNum == 1) {
                 const ImageHandler = async (data: Socket_Data_T) => {
-                    console.log(data.imageData, typeof(data.imageData));
-                    // clearTimeout(Timeout);
+                    // console.log(data.imageData, typeof(data.imageData));
+                    clearTimeout(Timeout);
                     console.log(Date.now() - Timer, 'ms');
                     try {
-                        let imageBuffer = Buffer.from(data.imageData, "base64");
+                        let imageBuffer = Buffer.from(data.imageData);
                         let result;
                         console.log("ImageBuffer", imageBuffer.byteLength / 1000, 'KB');
                         switch (req.url) {
@@ -47,11 +47,11 @@ const Predict = async (req: Request<any,any,NUGU_Request>, res: Response) => {
                 }
                 // Send event to mobile
                 // console.log("Emit event");
-                // const Timeout = setTimeout(() => {
-                //     global.SOCKET_CLIENTS[onlineDeviceID].removeListener("ImageCapture", ImageHandler);
-                //     nuguResponse.output.result = "요청을 처리하는데 너무 오래 걸립니다.";
-                //     return res.send(nuguResponse.toString());
-                // }, 3000);
+                const Timeout = setTimeout(() => {
+                    global.SOCKET_CLIENTS[onlineDeviceID].removeListener("ImageCapture", ImageHandler);
+                    nuguResponse.output.result = "요청을 처리하는데 너무 오래 걸립니다.";
+                    return res.send(nuguResponse.toString());
+                }, 3000);
 
                 global.SOCKET_CLIENTS[onlineDeviceID].once("ImageCapture", ImageHandler);
 
