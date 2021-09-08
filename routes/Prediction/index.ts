@@ -56,7 +56,7 @@ const Predict = async (req: Request<any,any,NUGU_Request>, res: Response) => {
                         nuguResponse.output.result = "오류가 발생했습니다.";
                         return res.send(nuguResponse.toString());
                     }
-                }, 3000);
+                }, 3500);
 
                 global.SOCKET_CLIENTS[onlineDeviceID].once("ImageCapture", ImageHandler);
 
