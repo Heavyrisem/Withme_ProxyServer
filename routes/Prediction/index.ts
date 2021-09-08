@@ -36,7 +36,7 @@ const Predict = async (req: Request<any,any,{imageData: string}>, res: Response)
             slow: false,
             host: 'https://translate.google.com',
         });
-        console.log("TTS gen time", Date.now() - timer, 'ms');
+        console.log("TTS gen time", Date.now() - TTStimer, 'ms');
         console.log("Request time", Date.now() - timer, 'ms');
         res.send({result: audioUrl});
     } catch (err) {
