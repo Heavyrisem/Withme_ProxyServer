@@ -25,6 +25,7 @@ const Predict = async (req: Request<any,any,NUGU_Request>, res: Response) => {
             console.log(onlineDeviceNum, onlineDeviceID);
             if (onlineDeviceID && onlineDeviceNum == 1) {
                 const ImageHandler = async (data: Socket_Data_T) => {
+                    console.log(data.imageData, typeof(data.imageData));
                     // clearTimeout(Timeout);
                     console.log(Date.now() - Timer, 'ms');
                     try {
