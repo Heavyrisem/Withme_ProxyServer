@@ -48,9 +48,14 @@ const Predict = async (req: Request<any,any,NUGU_Request>, res: Response) => {
                 // Send event to mobile
                 // console.log("Emit event");
                 const Timeout = setTimeout(() => {
-                    global.SOCKET_CLIENTS[onlineDeviceID].removeListener("ImageCapture", ImageHandler);
-                    nuguResponse.output.result = "요청을 처리하는데 너무 오래 걸립니다.";
-                    return res.send(nuguResponse.toString());
+                    try {
+                        global.SOCKET_CLIENTS[onlineDeviceID].removeListener("ImageCapture", ImageHandler);
+                        nuguResponse.output.result = "요청을 처리하는데 너무 오래 걸립니다.";
+                        return res.send(nuguResponse.toString());
+                    } catch(err) {
+                        nuguResponse.output.result = "오류가 발생했습니다.";
+                        return res.send(nuguResponse.toString());
+                    }
                 }, 3000);
 
                 global.SOCKET_CLIENTS[onlineDeviceID].once("ImageCapture", ImageHandler);
