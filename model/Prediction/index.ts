@@ -1,7 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import FormData from 'form-data';
 import Josa from 'josa-js';
-import { tmpdir } from 'node:os';
 import { AI_ENDPOINT, TRANSLATE } from './Config.json'; 
 
 export default {
@@ -31,6 +30,7 @@ export default {
             try {
                 const fd = new FormData();
                 fd.append("file", image, "image.jpeg");
+                let timer = Date.now();
 
                 const result: AxiosResponse<{result: string}> = await axios({
                     method: 'POST',
@@ -39,6 +39,7 @@ export default {
                     data: fd
                 });
                 // console.log(result.data);
+                console.log("OCR Server", Date.now() - timer, 'ms');
                 return resolve(result.data.result);
             } catch (err) {
                 // console.log(err)

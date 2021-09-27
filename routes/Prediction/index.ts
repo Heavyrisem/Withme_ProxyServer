@@ -7,14 +7,14 @@ import * as googleTTS from 'google-tts-api';
 const router = Router();
 
 const Predict = async (req: Request<any,any,{imageData: string}>, res: Response) => {
+    console.log();
     let textResult = "";
     let timer = Date.now();
     if (req.body.imageData) {
-        console.log("base64 length", req.body.imageData.length);
 
         try {
             let imageBuffer = Buffer.from(req.body.imageData, "base64");
-            console.log("ImageBuffer", imageBuffer.byteLength / 1000, 'KB');
+            console.log("ImageData", imageBuffer.byteLength / 1000, 'KB');
             switch (req.url) {
                 case "/caption": 
                     textResult = await Prediction.Caption(imageBuffer);
